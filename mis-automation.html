@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MIS Automation (Python) — Abhiudya Verma</title>
+<meta name="description" content="Case study: a modular Python pipeline that turns a raw CSV/XLSX into a fully audited MIS Excel report — cleaning log, KPIs, pivots with native charts, optional AI insights, SQL analysis and a Power BI export.">
+<link rel="canonical" href="https://abhiudyav.github.io/projects/mis-automation.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2314284B'/%3E%3Crect x='20' y='55' width='14' height='28' fill='%23F5F6F8'/%3E%3Crect x='43' y='38' width='14' height='45' fill='%232C7A8C'/%3E%3Crect x='66' y='22' width='14' height='61' fill='%23CE7A2E'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <nav class="nav">
+    <a class="nav-brand" href="../index.html#top"><span class="dot"></span>Abhiudya Verma</a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <ul class="nav-links">
+      <li><a href="../index.html#about">About</a></li>
+      <li><a href="../index.html#skills">Skills</a></li>
+      <li><a href="../index.html#projects">Projects</a></li>
+      <li><a href="../index.html#github">GitHub</a></li>
+      <li><a href="../index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="main">
+  <div class="project-hero">
+    <div class="container">
+      <div class="breadcrumb"><a href="../index.html">Home</a> / <a href="../index.html#projects">Projects</a> / MIS Automation</div>
+      <h1>MIS Automation (Python)</h1>
+      <div class="meta-row">
+        <span class="status live">Completed — 9 of 9 phases delivered</span>
+        <span class="tag">Python</span><span class="tag">Excel</span><span class="tag">Automation</span><span class="tag">Data Processing</span>
+      </div>
+      <p class="lede">A modular pipeline that takes a raw CSV or Excel file and does the work of
+      an MIS Executive: profiling, cleaning with a full audit trail, KPI calculation, pivot tables
+      with native Excel charts, optional AI-generated insights, read-only SQL analysis, and a
+      Power BI-ready export — wrapped in one professional Excel report.</p>
+    </div>
+  </div>
+
+  <div class="doc-section">
+    <div class="container">
+      <h2><span class="sec-num">01</span>Overview</h2>
+      <p>The project is a Python package (<span class="mono">core/</span> + <span class="mono">ai/</span>)
+      with two front ends — a CLI (<span class="mono">app.py</span>) and a Streamlit UI
+      (<span class="mono">streamlit_app.py</span>) — that both call the same
+      <span class="mono">core/pipeline.py</span> orchestrator, so the two interfaces can never
+      silently produce different results. Run against the bundled sample dataset (510 rows), it
+      produces a 23-sheet Excel report plus a set of CSV exports.</p>
+      <img src="../assets/images/mis-automation-report-cover.png" alt="Cover sheet of the generated MIS Excel report, showing dataset overview and how-to-read-this-workbook guide">
+      <p class="img-cap">Cover sheet of the actual generated report, run against the bundled sample dataset.</p>
+    </div>
+  </div>
+
+  <div class="doc-section">
+    <div class="container">
+      <h2><span class="sec-num">02</span>Problem</h2>
+      <p>Turning a raw export into an MIS report is normally a manual, repeatable-but-repeated
+      chore: check for missing/duplicate data, clean it consistently, compute the same handful of
+      KPIs, build the same pivots and charts, and write it all into a report — every single month,
+      by hand. This project automates that chore end-to-end while keeping every step auditable,
+      so a human reviewer can still see exactly what was changed and why.</p>
+    </div>
+  </div>
+
+  <div class="doc-section">
+    <div class="container">
+      <h2><span class="sec-num">03</span>Solution</h2>
+      <p>A 9-phase pipeline (see <span class="mono">BUILD_PLAN.md</span> in the repo) where each
+      stage has one responsibility and hands off a well-defined result to the next:</p>
+      <div class="arch-flow">
+        <span class="arch-step">Input (CSV/XLSX)</span><span class="arch-arrow">→</span>
+        <span class="arch-step">FileLoader</span><span class="arch-arrow">→</span>
+        <span class="arch-step">Profiler</span><span class="arch-arrow">→</span>
+        <span class="arch-step">Cleaner</span><span class="arch-arrow">→</span>
+        <span class="arch-step">Transformer</span><span class="arch-arrow">→</span>
+        <span class="arch-step">Analyzer + KPI Engine</span>
+      </div>
+      <div class="arch-flow">
+        <span class="arch-step">Pivot + Chart Engine</span><span class="arch-arrow">→</span>
+        <span class="arch-step">AI Insights (optional)</span><span class="arch-arrow">→</span>
+        <span class="arch-step">SQL Engine (optional)</span><span class="arch-arrow">→</span>
+        <span class="arch-step">Power BI Export (optional)</span><span class="arch-arrow">→</span>
+        <span class="arch-step">Excel Report</span><span class="arch-arrow">→</span>
+        <span class="arch-step">Quality Control</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-section">
+    <div class="container">
+      <h2><span class="sec-num">04</span>Workflow</h2>
+      <p>Run from the command line against the bundled sample data:</p>
+      <div class="log-block">$ python app.py --file input/sample_sales_data.csv<br>
+&nbsp;<br>
+<span class="m">== Sheet: Sheet1 ==</span><br>
+Rows: 510 | Columns: 10 | Duplicate rows: 10 (2.0%) | Missing: 0.2%<br>
+&nbsp;<br>
+<span class="m">--- Cleaning ---</span> 9 actions logged<br>
+<span class="m">--- KPIs ---</span> Total Revenue, Average Order Value, Total Quantity Sold,<br>
+&nbsp;&nbsp;Target Achievement %, Total Orders/Records<br>
+<span class="m">--- Pivots ---</span> 12 pivot tables generated (Region / Product / Employee ID / Status ×<br>
+&nbsp;&nbsp;Revenue / Target / Unit Price)<br>
+<span class="m">--- Reconciliation ---</span> raw → cleaned → transformed row counts match<br>
+<span class="k">--- Quality Control ---</span> PASSED</div>
+      <p>Actual per-step audit trail, taken from <span class="mono">logs/audit.jsonl</span> for this run:</p>
+      <div class="log-block">
+      file_loader.load_file &nbsp;→ 510 rows, 10 cols&nbsp; <span class="m">success</span><br>
+      profiler.profile_dataset → duplicate_rows: 10, missing_pct: 0.2&nbsp; <span class="m">success</span><br>
+      cleaner.clean_dataset &nbsp;&nbsp;&nbsp;→ 9 actions logged, outliers flagged on [Revenue, Target]&nbsp; <span class="m">success</span><br>
+      transformer.transform_dataset → 5 derived columns added (10 → 16 cols)&nbsp; <span class="m">success</span><br>
+      kpi_engine.calculate_kpis → 5 KPIs computed&nbsp; <span class="m">success</span><br>
+      pivot_engine.generate_pivots → 12 pivots generated&nbsp; <span class="m">success</span><br>
+      sql_engine.analyze &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ 9 read-only queries run&nbsp; <span class="m">success</span><br>
+      powerbi_engine.export &nbsp;&nbsp;→ fact + 4 dimension CSVs, DAX measures&nbsp; <span class="m">success</span><br>
+      excel_report.generate_report → 23-sheet .xlsx written&nbsp; <span class="m">success</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-section">
+    <div class="container">
+      <h2><span class="sec-num">05</span>n8n Nodes</h2>
+      <p class="callout">Not applicable to this project. n8n is used in a separate project — see <a href="n8n-mis-automation.html">AI-Powered MIS Executive Automation</a>.</p>
+    </div>
+  </div>
+
+  <div class="doc-section">
+    <div class="container">
+      <h2><span class="sec-num">06</span>Technologies</h2>
+      <div class="tools-band">
+        <span class="tool-chip">Python 3</span><span class="tool-chip">pandas</span>
+        <span class="tool-chip">openpyxl</span><span class="tool-chip">xlsxwriter</span>
+        <span class="tool-chip">SQLAlchemy / SQLite</span><span class="tool-chip">Anthropic SDK (Claude)</span>
+        <span class="tool-chip">Streamlit</span><span class="tool-chip">pytest</span>
+        <span class="tool-chip">PyYAML</span><span class="tool-chip">python-dotenv</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-section">
+    <div class="container">
+      <h2><span class="sec-num">07</span>Data Processing</h2>
+      <p>Column typing is evidence-based, not name-based — a column named "Revenue" is only
+      classed as numeric if its values actually parse as numeric at a ≥85% hit rate. Cleaning never
+      silently destroys data: the untouched raw dataframe is always kept alongside the cleaned one
+      and a structured log (column, issue, rows affected, action, before/after, reason). Duplicates
+      and outliers are flagged, never auto-removed, unless explicitly opted into via
+      <span class="mono">--drop-duplicates</span>.</p>
+      <table class="data-table">
+        <tr><th>Stage</th><th>Output file</th></tr>
+        <tr><td>Raw</td><td><span class="mono">&lt;name&gt;_raw.csv</span></td></tr>
+        <tr><td>Cleaned</td><td><span class="mono">&lt;name&gt;_cleaned.csv</span></td></tr>
+        <tr><td>Transformed</td><td><span class="mono">&lt;name&gt;_transformed.csv</span></td></tr>
+        <tr><td>Cleaning log</td><td><span class="mono">&lt;name&gt;_cleaning_log.csv</span> / <span class="mono">.json</span></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="doc-section">
+    <div class="container">
+      <h2><span class="sec-num">08</span>Automation</h2>
+      <ul>
+        <li>KPIs, pivots and DAX measures are only generated when their source columns actually
+        exist — a missing measure returns "Not available from the supplied data," never a fabricated number.</li>
+        <li>SQL is read-only by default, enforced both by never generating destructive statements
+        and by a keyword filter that rejects DROP/DELETE/TRUNCATE/UPDATE/ALTER/INSERT.</li>
+        <li>No <span class="mono">.pbix</span> file is ever created — Power BI Desktop/Service
+        isn't available headlessly, so the pipeline exports Power BI-ready CSVs, a data dictionary
+        and suggested DAX measures instead, and says so explicitly rather than pretending otherwise.</li>
+        <li>Verified against a 150,000-row synthetic dataset: full pipeline runs in ~13 seconds,
+        producing a 3.5MB report.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="doc-section">
+    <div class="container">
+      <h2><span class="sec-num">09</span>Reporting</h2>
+      <p>The generated workbook has 23 sheets: Executive Summary, KPI Summary, Data Quality,
+      Cleaning Log, one sheet per pivot (each with its native chart), Trend Analysis, Anomalies,
+      AI Insights, SQL Analysis, Power BI Notes, Raw/Cleaned/Transformed Data, and Methodology.</p>
+      <img src="../assets/images/mis-automation-kpi-summary.png" alt="KPI Summary sheet from the generated report, showing formula, value and period for each computed KPI">
+      <p class="img-cap">KPI Summary sheet — actual output from the sample run (Revenue 3,365,672.95 total, 510 records).</p>
+    </div>
+  </div>
+
+  <div class="doc-section">
+    <div class="container">
+      <h2><span class="sec-num">10</span>Output</h2>
+      <p>Per source file: one MIS Excel report, raw/cleaned/transformed CSVs, a cleaning log
+      (CSV + JSON), a Power BI fact table + one dimension CSV per low-cardinality categorical
+      column, a data dictionary, and a DAX measures text file.</p>
+    </div>
+  </div>
+
+  <div class="doc-section">
+    <div class="container">
+      <h2><span class="sec-num">11</span>Business Value</h2>
+      <ul>
+        <li>Reduces the repetitive part of monthly MIS reporting to a single command.</li>
+        <li>Standardises cleaning and KPI logic so two runs of the same data produce the same numbers.</li>
+        <li>Keeps a full audit trail (JSONL) of every automated decision, for review rather than blind trust.</li>
+        <li>Degrades gracefully — AI insights, SQL and Power BI export are all optional and the
+        pipeline runs fully without them if a key or feature is disabled.</li>
+      </ul>
+      <p>No invented percentage improvements are claimed here — these are the properties the code
+      and its 44 passing tests actually demonstrate.</p>
+    </div>
+  </div>
+
+  <div class="doc-section">
+    <div class="container">
+      <h2><span class="sec-num">12</span>What I Learned</h2>
+      <ul>
+        <li>Column-name heuristics are dangerous without tokenization — an identifier hint like
+        "no" was originally matching inside ordinary words like "Notes" via substring matching.
+        Fixed with a camelCase-aware tokenizer and covered by a regression test.</li>
+        <li>An AI layer is safer when it's structurally prevented from computing numbers itself —
+        it only ever receives pre-computed KPI/trend/anomaly figures, never raw data.</li>
+        <li>An independent Quality Control pass that re-derives totals itself (rather than trusting
+        each engine's own math) catches bugs that a self-check inside the same engine would miss.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="doc-section">
+    <div class="container">
+      <h2><span class="sec-num">13</span>Future Improvements</h2>
+      <ul>
+        <li>Wire this pipeline into a scheduled n8n workflow (see the separate n8n project) so reports
+        run and get delivered automatically instead of via CLI/Streamlit.</li>
+        <li>True out-of-core/streaming ingestion for 500k+ row files (currently read fully into memory).</li>
+        <li>Direct Power BI Service / workspace publishing once available in a non-headless environment.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="next-project">
+      <a href="sales-mis-dashboard.html">← Sales MIS Dashboard</a>
+      <a href="n8n-mis-automation.html">Next: AI-Powered MIS Executive Automation →</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <span>© <span data-year>2026</span> Abhiudya Verma</span>
+    <span><a href="https://github.com/abhiudyav/abhiudyav.github.io" target="_blank" rel="noopener">View source on GitHub</a></span>
+  </div>
+</footer>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

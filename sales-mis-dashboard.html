@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sales MIS Dashboard — Abhiudya Verma</title>
+<meta name="description" content="Case study: a fully formula-driven Excel MIS dashboard over 1,039 Australian retail order lines, with live filters, KPI cards, native charts and a data quality panel.">
+<link rel="canonical" href="https://abhiudyav.github.io/projects/sales-mis-dashboard.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2314284B'/%3E%3Crect x='20' y='55' width='14' height='28' fill='%23F5F6F8'/%3E%3Crect x='43' y='38' width='14' height='45' fill='%232C7A8C'/%3E%3Crect x='66' y='22' width='14' height='61' fill='%23CE7A2E'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <nav class="nav">
+    <a class="nav-brand" href="../index.html#top"><span class="dot"></span>Abhiudya Verma</a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <ul class="nav-links">
+      <li><a href="../index.html#about">About</a></li>
+      <li><a href="../index.html#skills">Skills</a></li>
+      <li><a href="../index.html#projects">Projects</a></li>
+      <li><a href="../index.html#github">GitHub</a></li>
+      <li><a href="../index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="main">
+  <div class="project-hero">
+    <div class="container">
+      <div class="breadcrumb"><a href="../index.html">Home</a> / <a href="../index.html#projects">Projects</a> / Sales MIS Dashboard</div>
+      <h1>Sales MIS Dashboard</h1>
+      <div class="meta-row">
+        <span class="status live">Completed</span>
+        <span class="tag">Excel</span><span class="tag">MIS</span><span class="tag">Dashboard</span><span class="tag">Data Analysis</span>
+      </div>
+      <p class="lede">A single-workbook, fully formula-driven MIS dashboard over 1,039 Australian retail
+      order lines (Feb 2013 – Feb 2017) — seven live filters, 8 KPI cards, 6 native Excel charts,
+      three ranking tables, and an auto-generated insights panel. No PivotTables, slicers or macros.</p>
+    </div>
+  </div>
+
+  <div class="doc-section">
+    <div class="container">
+      <h2><span class="sec-num">01</span>Overview</h2>
+      <p>This is a single <span class="mono">.xlsx</span> workbook designed to be handed to someone
+      who has never opened the file before: they open the <span class="mono">DASHBOARD</span> tab,
+      pick filters from seven dropdowns, and every KPI, chart, ranking table and insight sentence
+      recalculates instantly. There's nothing to refresh and nothing hidden behind a macro —
+      every number on the sheet is a plain Excel formula that can be clicked on and traced.</p>
+      <img src="../assets/images/sales-dashboard-overview.png" alt="Sales MIS Dashboard — filters, KPI cards and trend charts, screenshotted directly from the workbook with filters set to All">
+      <p class="img-cap">Screenshot taken directly from the workbook (filters set to "All").</p>
+    </div>
+  </div>
+
+  <div class="doc-section">
+    <div class="container">
+      <h2><span class="sec-num">02</span>Business Problem</h2>
+      <p>Retail order data — order lines, customers, products, salespeople, discounts and shipping —
+      is easy to collect and hard to read. Someone reviewing performance needs to slice it by
+      year, region, category, segment or salesperson without waiting on a new pivot or a new report
+      each time, and needs to trust the numbers without re-deriving them by hand. The brief here was
+      to turn ~1,000 raw order lines into a dashboard a non-technical manager could drive themselves.</p>
+    </div>
+  </div>
+
+  <div class="doc-section">
+    <div class="container">
+      <h2><span class="sec-num">03</span>Solution</h2>
+      <p>Rather than PivotTables + Slicers + a VBA refresh macro, the dashboard is built on live
+      <span class="mono">SUMPRODUCT</span> / <span class="mono">INDEX</span>&#8203;/<span class="mono">MATCH</span>
+      formulas driven by simple dropdown cells. Functionally it behaves the same way for the end
+      user — change a filter and everything updates immediately — but it's more robust when a
+      workbook is generated programmatically, and every calculation stays auditable on a dedicated
+      calculation sheet rather than living inside opaque pivot cache objects.</p>
+      <div class="callout"><strong>Design decision, stated plainly:</strong> the workbook's own
+      README documents this trade-off directly — formulas over PivotTables/Slicers/VBA — as a
+      deliberate choice, not an oversight.</div>
+    </div>
+  </div>
+
+  <div class="doc-section">
+    <div class="container">
+      <h2><span class="sec-num">04</span>Data Processing</h2>
+      <p>The workbook is organized into six sheets, each with one job:</p>
+      <table class="data-table">
+        <tr><th>Sheet</th><th>Role</th></tr>
+        <tr><td>DASHBOARD</td><td>Filters, KPI cards, charts, rankings, insights, data quality panel</td></tr>
+        <tr><td>DATA</td><td>Clean Excel Table (<span class="mono">tblData</span>), one row per order line, with computed Year/Quarter/Month/Region/Cost/Profit/Margin columns</td></tr>
+        <tr><td>CALC</td><td>Hidden calculation engine — pre-aggregated tables by month, category, region, segment, salesperson, product and customer</td></tr>
+        <tr><td>LISTS</td><td>Hidden source lists powering the seven filter dropdowns</td></tr>
+        <tr><td>RAW_DATA</td><td>Untouched copy of the original order data, kept for audit/traceability</td></tr>
+        <tr><td>README</td><td>User guide: how to use it, key definitions, and data quality notes</td></tr>
+      </table>
+      <p>New orders are added by pasting rows below the last row of <span class="mono">tblData</span>
+      — the table auto-expands and every formula, chart and KPI includes the new rows automatically.</p>
+    </div>
+  </div>
+
+  <div class="doc-section">
+    <div class="container">
+      <h2><span class="sec-num">05</span>Dashboard</h2>
+      <p>Seven cascading filters (Year, Quarter, Month, Category, Region, Segment, Salesperson),
+      each backed by a Data Validation dropdown list — leaving a filter on "All" includes every
+      value for that dimension. Below the filters: 8 KPI cards, a trend + category chart row, a
+      region + segment chart row, and two ranking charts, followed by three ranking tables and an
+      auto-generated insights panel.</p>
+      <img src="../assets/images/sales-dashboard-top-performers.png" alt="Top 10 products, sales by salesperson chart, and the three ranking tables on the dashboard">
+      <p class="img-cap">Top-performer charts and ranking tables, screenshotted directly from the workbook.</p>
+    </div>
+  </div>
+
+  <div class="doc-section">
+    <div class="container">
+      <h2><span class="sec-num">06</span>KPIs</h2>
+      <p>Eight KPI cards, all filter-aware:</p>
+      <div class="kpi-strip">
+        <div class="kpi-cell"><span class="v">$1,199,395</span><span class="l">Total Sales</span></div>
+        <div class="kpi-cell"><span class="v">$561,876</span><span class="l">Total Profit</span></div>
+        <div class="kpi-cell"><span class="v">46.8%</span><span class="l">Profit Margin</span></div>
+        <div class="kpi-cell"><span class="v">$1,154.37</span><span class="l">Avg Order Value</span></div>
+        <div class="kpi-cell"><span class="v">1,039</span><span class="l">Total Transactions</span></div>
+        <div class="kpi-cell"><span class="v">27,060</span><span class="l">Units Sold</span></div>
+        <div class="kpi-cell"><span class="v">538</span><span class="l">Total Customers</span></div>
+        <div class="kpi-cell"><span class="v">-28.6%</span><span class="l">YoY Sales Growth</span></div>
+      </div>
+      <p>YoY Sales Growth always compares the latest complete calendar year in the data against
+      the year before it (here, 2016 vs. 2015), and respects the Category/Region/Segment/Salesperson
+      filters while deliberately ignoring Quarter/Month so full years are compared fairly. 2017 is
+      excluded from that comparison because it's a partial year (Jan–Feb only).</p>
+    </div>
+  </div>
+
+  <div class="doc-section">
+    <div class="container">
+      <h2><span class="sec-num">07</span>Analysis</h2>
+      <p>The insights panel is generated by formula from whatever filter is currently selected —
+      these five lines are the live output for "All" filters:</p>
+      <ul>
+        <li>Sales in 2016 were -28.6% versus 2015 ($272,077 vs $381,317).</li>
+        <li>Technology is the top-performing category, generating $828,803 (69.1% of total sales).</li>
+        <li>NSW is the leading region with $901,978 in sales (75.2% of total).</li>
+        <li>The Top 10 customers shown contributed 23.3% of total sales in the current selection.</li>
+        <li>Yvette Biti is the leading salesperson with $154,852 in sales; profit margin currently
+        stands at 46.8%, and Furniture carries the highest category-level margin (57.5%).</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="doc-section">
+    <div class="container">
+      <h2><span class="sec-num">08</span>Excel Techniques Used</h2>
+      <div class="two-col">
+        <div>
+          <p><strong style="color:var(--ink)">Actually used, verified in the file:</strong></p>
+          <ul>
+            <li><span class="mono">SUMPRODUCT</span> — the core multi-criteria aggregation engine (1,044 uses)</li>
+            <li><span class="mono">INDEX</span> / <span class="mono">MATCH</span> — rankings and lookups (81 uses each)</li>
+            <li><span class="mono">LARGE</span> — Top-N ranking logic</li>
+            <li><span class="mono">IF</span> / <span class="mono">IFERROR</span> / <span class="mono">OR</span> — conditional and error-safe logic throughout</li>
+            <li><span class="mono">COUNTIF</span> / <span class="mono">COUNTIFS</span> / <span class="mono">COUNTBLANK</span> — the data quality checks</li>
+            <li><span class="mono">TEXT</span> / <span class="mono">DATE</span> / <span class="mono">YEAR</span> / <span class="mono">MONTH</span> — date handling and formatting</li>
+            <li>Native Excel Table (<span class="mono">tblData</span>) with structured references</li>
+            <li>Data Validation dropdown lists (7 filters, list-type)</li>
+            <li>Native Excel charts: 1 line, 4 bar/column, 1 pie</li>
+          </ul>
+        </div>
+        <div>
+          <p><strong style="color:var(--ink)">Deliberately not used:</strong></p>
+          <ul>
+            <li>No PivotTables or Slicers — replaced by the SUMPRODUCT/CALC-sheet engine above</li>
+            <li>No VBA / macros — the workbook is 100% formula-driven</li>
+            <li>No actual Conditional Formatting rules — the ✓/⚠ data quality indicators are plain
+            <span class="mono">IF</span> formulas producing text, not CF rules</li>
+            <li>No VLOOKUP or XLOOKUP — INDEX/MATCH was used instead throughout</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-section">
+    <div class="container">
+      <h2><span class="sec-num">09</span>Tools</h2>
+      <div class="tools-band">
+        <span class="tool-chip">Microsoft Excel</span><span class="tool-chip">Excel Tables</span>
+        <span class="tool-chip">Data Validation</span><span class="tool-chip">Native Excel Charts</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-section">
+    <div class="container">
+      <h2><span class="sec-num">10</span>Output</h2>
+      <p>One self-contained <span class="mono">.xlsx</span> file. No external data connections,
+      no add-ins, no dependencies — it opens and works in any current version of Excel.</p>
+    </div>
+  </div>
+
+  <div class="doc-section">
+    <div class="container">
+      <h2><span class="sec-num">11</span>What I Learned</h2>
+      <ul>
+        <li>How to design a calculation layer (the CALC sheet) that stays fully auditable instead
+        of hiding aggregation logic inside PivotTable caches.</li>
+        <li>How to make a data quality check visible to a non-technical user (the ✓/⚠ panel) instead
+        of leaving bad data to surface only when a total looks wrong.</li>
+        <li>Why documenting definitions (what counts as "Sales", what "Region" means here) inside
+        the workbook itself matters as much as the calculations — a README sheet the user actually
+        has to open.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="doc-section">
+    <div class="container">
+      <h2><span class="sec-num">12</span>Future Improvements</h2>
+      <ul>
+        <li>Add a Power BI version of the same model for a browser-based, shareable dashboard.</li>
+        <li>Extend the YoY comparison to a rolling 12-month view instead of full calendar years only.</li>
+        <li>Add an automated de-duplication step for the 4 duplicate Order No values currently only flagged, not resolved.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="next-project">
+      <a href="../index.html#projects">← All projects</a>
+      <a href="mis-automation.html">Next: MIS Automation (Python) →</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <span>© <span data-year>2026</span> Abhiudya Verma</span>
+    <span><a href="https://github.com/abhiudyav/abhiudyav.github.io" target="_blank" rel="noopener">View source on GitHub</a></span>
+  </div>
+</footer>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>
